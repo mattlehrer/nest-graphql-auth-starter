@@ -1,4 +1,4 @@
-import { Schema, model, Model, Document, Query, Types } from 'mongoose';
+import { Schema, model, Model, Document, Query } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { User } from '../../../graphql.classes';
 
