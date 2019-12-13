@@ -76,4 +76,10 @@ module.exports = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
+
+  watchPlugins: [
+    require.resolve('jest-watch-select-projects'),
+    require.resolve('jest-watch-typeahead/filename'),
+    require.resolve('jest-watch-typeahead/testname'),
+  ],
 };

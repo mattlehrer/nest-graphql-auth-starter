@@ -1,23 +1,42 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { EpisodesModule } from './episodes/episodes.module';
-import { UsersModule } from './users/users.module';
-import { PostsModule } from './posts/posts.module';
-import { SavesModule } from './saves/saves.module';
-import { PodcastsModule } from './podcasts/podcasts.module';
-import { AuthModule } from './auth/auth.module';
+import { ApiModule } from './api/api.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
+import { join } from 'path';
+import { ConfigModule } from './config/config.module';
+import { ConfigService } from './config/config.service';
 
 @Module({
   imports: [
-    EpisodesModule,
-    UsersModule,
-    PostsModule,
-    SavesModule,
-    PodcastsModule,
-    AuthModule,
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule, ApiModule],
+      useFactory: async (configService: ConfigService) => {
+        const options: MongooseModuleOptions = {
+          uri: configService.mongoUri,
+          useNewUrlParser: true,
+          useCreateIndex: true,
+          useUnifiedTopology: true,
+        };
+
+        if (configService.mongoAuthEnabled) {
+          options.user = configService.mongoUser;
+          options.pass = configService.mongoPassword;
+        }
+
+        return options;
+      },
+      inject: [ConfigService],
+    }),
+    GraphQLModule.forRoot({
+      typePaths: ['./**/*.graphql'],
+      installSubscriptionHandlers: true,
+      context: ({ req }: any) => ({ req }),
+      definitions: {
+        path: join(process.cwd(), 'src/graphql.classes.ts'),
+        outputAs: 'class',
+      },
+    }),
+    ConfigModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
