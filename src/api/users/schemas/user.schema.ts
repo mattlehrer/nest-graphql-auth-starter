@@ -1,6 +1,6 @@
 import { Schema, model, Model, Document, Query, Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { User } from '../../graphql.classes';
+import { User } from '../../../graphql.classes';
 
 export interface UserDocument extends User, Document {
   // Declaring everything that is not in the GraphQL Schema for a User
@@ -21,6 +21,7 @@ export interface UserDocument extends User, Document {
   checkPassword(password: string): Promise<boolean>;
 }
 
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IUserModel extends Model<UserDocument> {
   /**
    * Uses the same method as the schema to validate an email. Matches HTML 5.2 spec.
@@ -36,6 +37,11 @@ export const PasswordResetSchema: Schema = new Schema({
   token: { type: String, required: true },
   expiration: { type: Date, required: true },
 });
+
+function validateEmail(email: string): boolean {
+  const expression = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return expression.test(email);
+}
 
 export const UserSchema: Schema = new Schema(
   {
@@ -81,14 +87,9 @@ export const UserSchema: Schema = new Schema(
   },
 );
 
-function validateEmail(email: string) {
-  // tslint:disable-next-line:max-line-length
-  const expression = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  return expression.test(email);
-}
-
 // NOTE: Arrow functions are not used here as we do not want to use lexical scope for 'this'
 UserSchema.pre<UserDocument>('save', function(next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
 
   user.lowercaseUsername = user.username.toLowerCase();
@@ -155,6 +156,7 @@ UserSchema.pre<Query<UserDocument>>('findOneAndUpdate', function(next) {
 UserSchema.methods.checkPassword = function(
   password: string,
 ): Promise<boolean> {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
 
   return new Promise((resolve, reject) => {

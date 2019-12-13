@@ -30,7 +30,7 @@ import { ConfigService } from './config/config.service';
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
       installSubscriptionHandlers: true,
-      context: ({ req }: any) => ({ req }),
+      context: ({ req }) => ({ req }),
       definitions: {
         path: join(process.cwd(), 'src/graphql.classes.ts'),
         outputAs: 'class',

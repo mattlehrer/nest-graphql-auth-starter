@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { User } from '../../graphql.classes';
+import { User } from '../../../graphql.classes';
 import { UsersService } from '../../users/users.service';
 import { AuthenticationError } from 'apollo-server-core';
 
@@ -16,7 +16,7 @@ export class UsernameEmailGuard implements CanActivate {
     const request = ctx.getContext().req;
     let shouldActivate = false;
     if (request.user) {
-      const user = <User>request.user;
+      const user = request.user as User;
       const args = ctx.getArgs();
       if (args.username && typeof args.username === 'string') {
         shouldActivate =

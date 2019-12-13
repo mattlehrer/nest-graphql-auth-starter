@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { User } from '../../graphql.classes';
+import { User } from '../../../graphql.classes';
 import { UsersService } from '../../users/users.service';
 import { AuthenticationError } from 'apollo-server-core';
 
@@ -15,7 +15,7 @@ export class AdminGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext().req;
     if (request.user) {
-      const user = <User>request.user;
+      const user = request.user as User;
       if (this.usersService.isAdmin(user.permissions)) return true;
     }
     throw new AuthenticationError(

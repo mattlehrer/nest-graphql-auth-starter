@@ -2,7 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Context } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CreateUserInput, User, UpdateUserInput } from '../graphql.classes';
+import { CreateUserInput, User, UpdateUserInput } from '../../graphql.classes';
 import { UsernameEmailAdminGuard } from '../auth/guards/username-email-admin.guard';
 import { AdminGuard } from '../auth/guards/admin.guard';
 import { UserInputError, ValidationError } from 'apollo-server-core';

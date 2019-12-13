@@ -1,5 +1,5 @@
 import { Resolver, Args, Query, Context } from '@nestjs/graphql';
-import { LoginUserInput, LoginResult } from '../graphql.classes';
+import { LoginUserInput, LoginResult } from '../../graphql.classes';
 import { AuthService } from './auth.service';
 import { AuthenticationError } from 'apollo-server-core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
