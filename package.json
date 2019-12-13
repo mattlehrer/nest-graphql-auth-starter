@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "0.0.1",
-  "description": "",
+  "description": "Nest API starter with auth and graphql",
   "author": "Matt Lehrer",
   "license": "MIT",
   "scripts": {
