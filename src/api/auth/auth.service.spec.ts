@@ -7,6 +7,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '../../config/config.service';
 import { ConfigModule } from '../../config/config.module';
 
+jest.mock('../users/users.service');
+
 describe('AuthService', () => {
   let service: AuthService;
 
@@ -30,6 +32,11 @@ describe('AuthService', () => {
         {
           provide: getModelToken('User'),
           useValue: UserModel,
+        },
+        ConfigService,
+        {
+          provide: ConfigService,
+          useValue: new ConfigService(`${process.env.NODE_ENV}.env`),
         },
       ],
     }).compile();
