@@ -9,7 +9,7 @@ import { ConfigService } from './config/config.service';
 @Module({
   imports: [
     MongooseModule.forRootAsync({
-      imports: [ConfigModule, ApiModule],
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
         const options: MongooseModuleOptions = {
           uri: configService.mongoUri,
@@ -37,6 +37,7 @@ import { ConfigService } from './config/config.service';
       },
     }),
     ConfigModule,
+    ApiModule,
   ],
 })
 export class AppModule {}

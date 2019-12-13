@@ -5,7 +5,6 @@ import { UsersModule } from './users/users.module';
 // import { SavesModule } from './saves/saves.module';
 // import { PodcastsModule } from './podcasts/podcasts.module';
 import { AuthModule } from './auth/auth.module';
-import { ApiController } from './api.controller';
 
 @Module({
   imports: [
@@ -16,6 +15,6 @@ import { ApiController } from './api.controller';
     // PodcastsModule,
     AuthModule,
   ],
-  controllers: [ApiController],
+  providers: [],
 })
 export class ApiModule {}
